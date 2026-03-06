@@ -1,57 +1,128 @@
 package academy.javapro.lab05;
 
+
+
 import java.util.Scanner;
+
+
 
 public class MathCalculatorLab {
 
-    // Simple class to hold calculation data (PROVIDED - DO NOT MODIFY)
+
+
     static class CalculatorBase {
+
         int n;
+
         long result;
 
+
+
         public CalculatorBase(int n) {
+
             this.n = n;
+
             this.result = 0;
+
         }
+
     }
 
-    // TODO 1: Implement this method
-    // Creates a Runnable that calculates the nth Fibonacci number
-    // Fibonacci sequence: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34...
-    // Formula: fib(n) = fib(n-1) + fib(n-2)
-    // Base cases: fib(0) = 0, fib(1) = 1
-    //
-    // The Runnable should:
-    // 1. Print: "Thread-X computing: fib(n)"
-    // 2. Calculate Fibonacci iteratively using two variables (prev, curr)
-    // 3. Include Thread.sleep(5) in the loop to simulate work
-    // 4. Store result in calc.result
-    // 5. Print: "Thread-X completed: fibonacci(n) = result"
-    //
-    // Example: fibonacci(8) = 21
+
+
     public static Runnable fibonacciCalculator(CalculatorBase calc) {
-        // TODO: Return a Runnable (use lambda or anonymous class)
-        return null; // Replace this
+
+        return () -> {
+
+            System.out.println(Thread.currentThread().getName() + " computing: fib(" + calc.n + ")");
+
+            long prev = 0;
+
+            long curr = 1;
+
+
+
+            if (calc.n == 0) {
+
+                calc.result = 0;
+
+            } else if (calc.n == 1) {
+
+                calc.result = 1;
+
+            } else {
+
+                for (int i = 2; i <= calc.n; i++) {
+
+                    long next = prev + curr;
+
+                    prev = curr;
+
+                    curr = next;
+
+                    try {
+
+                        Thread.sleep(5);
+
+                    } catch (InterruptedException e) {
+
+                        e.printStackTrace();
+
+                    }
+
+                }
+
+                calc.result = curr;
+
+            }
+
+
+
+            System.out.println(Thread.currentThread().getName() + " completed: fibonacci(" + calc.n + ") = " + calc.result);
+
+        };
+
     }
 
-    // TODO 2: Implement this method
-    // Creates a Runnable that calculates sum of squares from 1 to n
-    // Formula: 1² + 2² + 3² + ... + n²
-    //
-    // The Runnable should:
-    // 1. Print: "Thread-X computing: 1² + 2² + 3² + ... + n²"
-    // 2. Loop from 1 to n, adding i*i to result
-    // 3. Include Thread.sleep(5) in the loop to simulate work
-    // 4. Store result in calc.result
-    // 5. Print: "Thread-X completed: sumOfSquares(n) = result"
-    //
-    // Example: sumOfSquares(5) = 1 + 4 + 9 + 16 + 25 = 55
+
+
     public static Runnable sumOfSquaresCalculator(CalculatorBase calc) {
-        // TODO: Return a Runnable (use lambda or anonymous class)
-        return null; // Replace this
+
+        return () -> {
+
+            System.out.println(Thread.currentThread().getName() + " computing: 1^2 + 2^2 + 3^2 + ... + " + calc.n + "^2"); 
+            long sum = 0;
+
+
+
+            for (int i = 1; i <= calc.n; i++) {
+
+                sum += (long) i * i;
+
+                try {
+
+                    Thread.sleep(5);
+
+                } catch (InterruptedException e) {
+
+                    e.printStackTrace();
+
+                }
+
+            }
+
+
+
+            calc.result = sum;
+
+            System.out.println(Thread.currentThread().getName() + " completed: sumOfSquares(" + calc.n + ") = " + calc.result);
+
+        };
+
     }
 
-    // Main method (PROVIDED - DO NOT MODIFY)
+
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -84,7 +155,6 @@ public class MathCalculatorLab {
         scanner.close();
     }
 
-    // Helper method for single calculation (PROVIDED - DO NOT MODIFY)
     private static void runSingleDemo(Scanner scanner) {
         System.out.println("\n=== Single Calculation Demo ===");
         System.out.println("1. Fibonacci");
@@ -135,7 +205,6 @@ public class MathCalculatorLab {
         System.out.println("Execution time: " + (endTime - startTime) + "ms");
     }
 
-    // Helper method for multiple calculations (PROVIDED - DO NOT MODIFY)
     private static void runMultipleDemo(Scanner scanner) {
         System.out.println("\n=== Multiple Concurrent Calculations ===");
         System.out.print("Enter a number (1-20): ");
